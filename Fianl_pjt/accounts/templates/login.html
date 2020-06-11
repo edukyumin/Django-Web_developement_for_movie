@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>LOGIN</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Submit</button>
+  </form>
+  <a href="{% url 'movies:index' %}">INDEX</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+from django.db import models
+from django.conf import settings
+# Create your models here.
+
+class Genre(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
+class Movie(models.Model):
+    title = models.CharField(max_length=100)
+    original_title = models.CharField(max_length=100)
+    release_date = models.DateField()
+    popularity = models.FloatField()
+    vote_count = models.IntegerField()
+    vote_average = models.FloatField()
+    adult = models.BooleanField()
+    video = models.BooleanField()
+    overview = models.TextField()
+    original_language = models.CharField(max_length=30)
+    poster_path = models.CharField(max_length=255)
+    backdrop_path = models.CharField(max_length=255)
+    # 원래 genres
+    genre_ids = models.ManyToManyField(Genre, related_name='genres_ids')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_users')
+
+
+class Review(models.Model):
+    title = models.CharField(max_length=100)
+    rank = models.IntegerField()
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    content = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

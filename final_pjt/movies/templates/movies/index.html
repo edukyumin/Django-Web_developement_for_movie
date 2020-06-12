@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h1 style="text-align: center;">Welcome To Theater!</h1>
+<div class="d-flex justify-content-center" >
+  <a href="{% url 'movies:recommand' %}" class="btn btn-danger mx-1">영화추천</a>
+  {% if user.is_superuser %}
+  <a href="{% url 'movies:genre_create' %}" class="btn btn-primary float-right mx-1">장르목록추가</a>
+  <a href="{% url 'movies:movie_create' %}" class="btn btn-primary float-right mx-1">영화목록추가</a>
+  {% endif %}
+</div>
+
+<hr>
+
+<div class="row bg-secondary">
+  {% for movie in page_obj %}
+  <div class="col-sm-4 col-md-4">
+    <div class="card mb-4 pr-2 border border-warning" style="width: 18rem; height: 50rem;">
+      <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" class="d-flex justify-content-center card-img-top border border-dark" alt="...">
+      <div class="card-body">
+        <h3 class="card-title">{{ movie.title }}</h3>
+        <p class="card-text">{{ movie.overview|truncatewords:10 }}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">개봉일: {{ movie.release_date }}</li>
+        <li class="list-group-item">인기도: {{ movie.popularity }}</li>
+        <li class="list-group-item">평점: {{ movie.vote_average }}</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+</div>
+
+
+<div class="pagination">
+    <span class="step-links mx-auto">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </span>
+</div>
+
+{% endblock %}

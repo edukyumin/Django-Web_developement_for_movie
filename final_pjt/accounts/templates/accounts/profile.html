@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ person.username }}의 프로필</h1>
+{% with followings=person.followings.all followers=person.followers.all %}
+<p>팔로잉 : {{ followings|length }}</p>
+<p>팔로워 : {{ followers|length }}</p>
+<hr>
+{% endwith %}
+
+{% if user != person %}
+    {% if user in person.followers %}
+        <a href="{% url 'accounts:follow' person.username %}">언팔로우</a>
+    {% else %}
+        <a href="{% url 'accounts:follow' person.username %}">팔로우</a>
+    {% endif %}
+{% endif %}
+
+<hr>
+
+<h3>내가 좋아요 한 영화 목록</h3>
+<table class="table table-striped text-center">
+  <thead>
+    <tr class="">
+      <th scope="col">Numer</th>
+      <th scope="col">Title</th>
+      <th scope="col">Content</th>
+    </tr>
+  </thead>
+{% for movie in movies %}
+  <tbody>
+    <tr>
+    <th scope="row">{{ forloop.counter }}</th>
+    <td>{{ movie.title }}</a></td>
+    <td><img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" alt="poster" style="width:auto; height: 300px;"></td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

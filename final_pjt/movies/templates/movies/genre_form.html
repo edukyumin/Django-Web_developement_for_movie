@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+{% if request.resolver_match.url_name == 'genre_create' %}
+<h1>작성하기</h1>
+{% else %}
+<h1>수정하기</h1>
+{% endif %}
+
+{% if request.resolver_match.url_name == 'genre_create' %}
+<a href="{% url 'movies:index' %}"><뒤로가기</a>
+{% else %}
+<a href="{% url 'movies:detail' movie.pk %}"><뒤로가기</a>
+{% endif %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% if request.resolver_match.url_name == 'genre_create' %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">작성하기</button>
+        {% endbuttons %}
+    {% else %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">수정하기</button>
+        {% endbuttons %}
+    {% endif %}
+
+</form>
+{% endblock %}

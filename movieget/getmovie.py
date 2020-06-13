@@ -21,31 +21,31 @@ for i in range(1, 51):
         my_data = dict()
         my_data['model'] = "movies.movie"
         if 'original_title' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'release_date' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'popularity' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'vote_count' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'vote_average' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'adult' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'video' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'overview' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'original_language' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'poster_path' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'backdrop_path' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'genre_ids' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
         if 'like_users' not in ResultData[j].keys():
-            ResultData[j]['original_title'] = ''
+            ResultData[j]['original_title'] = '1'
 
         
         my_data['fields'] = ResultData[j]

@@ -17,7 +17,11 @@
   <div class="col-sm-4 col-md-4">
     <br>
     <div class="card mb-4 pr-2 border border-warning" style="width: 18rem; height: 50rem;">
+      {% if movie.poster_path == null %}
+      <img src="https://www.seoularts.ac.kr/Web-home/func/familyCompany/images/noimg.jpg" alt="...">
+      {% else %}
       <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" class="d-flex justify-content-center card-img-top border border-dark" alt="...">
+      {% endif %}
       <div class="card-body">
         <a href="{% url 'movies:detail' movie.pk %}" class="card-title">{{ movie.title }}</a>
         <p class="card-text">{{ movie.overview|truncatewords:10 }}</p>

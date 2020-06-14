@@ -1,31 +1,79 @@
 {% extends 'base.html' %}
-{% load bootstrap4 %}
-{% block content %}
-<a href="{% url 'movies:index' %}">뒤로가기</a>
-<br>
-<h2 class="text-info">{{ user.username }} 님을 위한 영화추천 BEST 10 !!</h2>
 
-<table class="table table-striped text-center">
+{% block content %}
+<a href="{% url 'movies:index' %}"><뒤로가기</a>
+<h1>Reviews Detail</h1>
+<hr>
+
+<div class="card text-center">
+  <div class="card-header">{{ movie.title }}</div>
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text">
+       <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" alt="poster" style="width:200px; height: auto;">
+       </br>
+   </p>
+  </div>
+</div>
+
+
+{% if movie.user == request.user %}
+<div class="d-flex justify-content-between my-3">
+<a href="{% url 'movies:movie_update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
+<form action="{% url 'movies:movie_delete' movie.pk review.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">삭제하기</button>
+</form>
+</div>
+{% endif %}
+
+
+{% if review.user == request.user %}
+<div class="d-flex justify-content-between my-3">
+<a href="{% url 'movies:update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
+<form action="{% url 'movies:delete' movie.pk review.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">삭제하기</button>
+</form>
+</div>
+{% endif %}
+
+
+<h3 class="my-3">댓글목록</h3>
+
+{% for comment in comments %}
+
+<table class="table table-striped">
   <thead>
-    <tr class="">
-      <th scope="col">Number</th>
-      <th scope="col">Title</th>
-      <th scope="col">Poster</th>
-      <th scope="col">Genre</th>
+    <tr>
+      <th scope="col">댓글 작성자</th>
+      <th scope="col">댓글 내용</th>
+      <th scope="col">댓글 삭제</th>
     </tr>
   </thead>
-    {% for result in results %}
   <tbody>
-    <th scope="row">{{ forloop.counter }}</th>
-    <td>{{ result.title }}</td>
-    <td><img src="https://image.tmdb.org/t/p/w780/{{ result.poster_path }}" alt="poster" style="width:auto; height: 300px;"></td>
-    <td class="genres">
-    {% for genre in result.genres.all %}
-      <p class="badge badge-danger p-2">{{ genre.name }}</p><br>
-      {% endfor %}
-    </td>
+    <tr>
+       <td>{{ comment.user.username }}</td>
+       <td>{{ comment.content }}</td>
+      <td>{% if comment.user == request.user %}
+      <form action="{% url 'movies:comments_delete' movie.pk review.pk comment.pk %}" method="POST">
+         {% csrf_token %}
+         <button class="btn btn-secondary">댓글삭제</button>
+      </form>
+      {% endif %}
+      </td>
+    </tr>
+{% endfor %}
   </tbody>
-    {% endfor %}
 </table>
+<hr>
+
+{% if user.is_authenticated %}
+<form action="{% url 'movies:comments_create' movie.pk review.pk %}" method="POST">
+   {% csrf_token %}
+   {{ comment_form.as_p }}
+   <button>댓글작성</button>
+</form>
+{% endif %}
 
 {% endblock %}

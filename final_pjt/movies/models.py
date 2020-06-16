@@ -43,3 +43,13 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class Recommand(models.Model):
+    genre_recommand = models.ManyToManyField(Genre, null=True,  related_name='genre_recommand')
+    adult = models.BooleanField(null=True)
+    popularity = models.FloatField(null=True)
+    vote_average = models.FloatField(null=True)
+    release_date = models.DateField(null=True)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

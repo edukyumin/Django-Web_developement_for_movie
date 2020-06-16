@@ -1,72 +1,84 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<a href="{% url 'movies:index' %}"><뒤로가기</a>
-<h1>Movie Detail</h1>
 
-<div class="d-flex justify-content-end">
-  <a href="{% url 'movies:create' movie.pk %}" class="btn btn-primary float-right">리뷰 작성 </a>
-</div>
-
-<!--좋아요-->
-    {% if user in movie.like_users.all %}
-      <i class="fas fa-heart fa-lg like-button" style="color:crimson" data-pk="{{ movie.pk }}"></i>
-    {% else %}
-      <i class="fas fa-heart fa-lg like-button" style="color:black" data-pk="{{ movie.pk }}"></i>
-    {% endif %}
-      <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span> 명이 이 영화를 좋아합니다.
-<hr>
-
-<div class="card text-center">
-  <div class="card-header text-info">{{ movie.title }}</div>
-  <div class="card-body">
-    <h5 class="card-title"></h5>
-    <p class="card-text">
+<div class="" id="first_detail">
+  <div class="d-flex justify-content-between bg-dark" id="detail_top">
+    
+    <div class="d-flex ml-3 text-white">
+      <h1>Details: {{ movie.original_title }}</h1>
+    </div>
+    <div class="d-flex mr-3 text-white">
+      <!--좋아요-->
+      {% if user in movie.like_users.all %}
+      <i class="fas fa-heart fa-lg like-button" style="color:crimson; margin-top: 4%; height: 5px; width: 5px; margin-right: 22px;" data-pk="{{ movie.pk }}"></i>
+      {% else %}
+      <i class="fas fa-heart fa-lg like-button" style="color:white; margin-top: 4%; height: 5px; width: 5px; margin-right: 22px;" data-pk="{{ movie.pk }}"></i>
+      {% endif %}
+      <h1 id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}명이 이 영화를 좋아합니다</h1> 
+    </div>
+    
+  </div>
+  
+  <div class="card text-center" id="detail_middle">
+    <div class="card-header bg-secondary text-white" >
+      <span style="font-size: xx-large; font-weight: 700;">{{ movie.title }}</span>
+      <span style="font-size: xx-large; font-weight: 700;"> ({{ movie.release_date }} 개봉)</span>
+    </div>
+    <div class="iframe" allowfullscreen>
+      <!-- <iframe width=100% height="400" style="margin-bottom: 0;" src="https://www.youtube.com/watch?v=Ub9EikTkrTk" frameborder="0" ></iframe> -->
       <iframe width="560" height="315" src="{{ video }}" frameborder="0" >
       </iframe>
-    	</br>
-    </p>
-    <h6 class="text-danger">Genres :
-    {% for genre in genres %}
-    <span>{{ genre.name }}</span>
-    {% endfor %}
-    </h6>
-    <h4>{{ movie.overview }}</h4>
+    </div>
+    <div class="bg-secondary text-white">
+      <h6 class="text-white" style="font-weight: 600; font-size: x-large;">Genres :
+        {% for genre in genres %}
+        <span>{{ genre.name }}</span>
+        {% endfor %}
+      </h6>
+      <h4>{{ movie.overview }}</h4>
+    </div>
+  </div>
+
+  <div id="detail_bottom">
+    <div class="d-flex justify-content-front">
+      <div>
+        <a href="{% url 'movies:create' movie.pk %}" class="btn btn-primary" style="border-color:darkblue;">리뷰작성 </a>
+      </div>
+      {% if request.user.is_superuser %}
+      <div class="d-flex ">
+        <a href="{% url 'movies:movie_update' movie.pk %}" class="btn btn-primary" style="border-color:darkblue;">수정하기</a>
+        <form action="{% url 'movies:movie_delete' movie.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="border-color:darkblue;">삭제하기</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    <table class="table table-striped">
+      <thead>
+          <tr>
+            <th scope="col">순서</th>
+            <th scope="col">후기제목</th>
+            <th scope="col">영화후기</th>
+            <th scope="col">작성자의 프로필 주소</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for review in reviews %}
+          <tr>
+            <th scope="row" style="">{{ forloop.counter }}</th>
+            <td><a href="{% url 'movies:review_detail' movie.pk review.pk %}" class="text-dark">{{ review.title }}</a></td>
+            <td>{{ review.content }}</td>
+          <td><a href="{% url 'accounts:profile' review.user.username %}" class="text-white">{{ review.user.username }} 님의 프로필 방문하기</a></td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Reviews</th>
-      <th scope="col">Title</th>
-      <th scope="col">Content</th>
-      <th scope="col">Created by</th>
 
-    </tr>
-  </thead>
-  <tbody>
-    {% for review in reviews %}
-    <tr>
-    	<th scope="row">{{ forloop.counter }}</th>
-    	<td><a href="{% url 'movies:review_detail' movie.pk review.pk %}">{{ review.title }}</a></td>
-    	<td>{{ review.content }}</td>
-		<td><a href="{% url 'accounts:profile' review.user.username %}">{{ review.user.username }}</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-{% if request.user.is_superuser %}
-<div class="d-flex justify-content-between my-3">
-<a href="{% url 'movies:movie_update' movie.pk %}" class="btn btn-primary">수정하기</a>
-<form action="{% url 'movies:movie_delete' movie.pk %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제하기</button>
-</form>
-</div>
-{% endif %}
 
 
 

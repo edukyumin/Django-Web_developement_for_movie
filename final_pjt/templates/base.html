@@ -13,53 +13,183 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- bootstrap4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-</head>
-<body>
-    <nav class="d-flex justify-content-between navbar navbar-expand-lg navbar-dark bg-dark text-white">
-      
-      <div>
-        <a class="navbar-brand text-danger " href="{% url 'movies:index' %}">NETFLOX</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
 
+    <style>
+      #navbar{
+        height: 80px
+      }
+      #logo{
+        font-size: xx-large;
+        font-weight: 700;
+      }
+      #login-info{
+        
+        font-size: large;
+        font-weight: 700;
+      }
+      #profile_img{
+        border-radius: 10px;
+        height: 30px;
+        width: 30px;
+      }
+      #home{
+        font-weight: 700;
+        font-size: x-large;
+      }
+      #recommand-button{
+        font-weight: 700;
+        font-size: x-large;
+      }
+      #welcome{
+        font-weight: 900;
+        font-size: x-large;
+        margin-right: 10px;
+      }
+      #first{
+        border: 3px solid;
+        border-color: black;
+        border-radius: 40px;
+        margin-top: 10px;
+        margin-left:auto;
+        margin-right: auto;
+        height: 400px;
+        width: 95%;
+      }
+      #iframebox{
+        border: 0px solid;
+        border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px;
+        border-color: black;
+      }
+      #video{
+        border: 0px solid;
+        border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin-left: -16px;
+
+      }
+      #first-right{
+        border: 0px solid;
+        text-align: left;
+        position: absolute;
+      }
+      #main{
+        
+        margin-left: 5px;
+      }
+      #today{
+        border: 0px solid;
+        border-top-right-radius: 40px;
+      }
+
+      #cards{
+        border: 1px solid;
+        border-radius: 40px;
+      }
+      #card_img{
+        border: 0px solid;
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+      }
+      #card_text{
+        border: 4px solid;
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+      }
+      #first_detail{
+        border: 3px solid;
+        border-color: black;
+        border-radius: 40px;
+        margin-top: 10px;
+        margin-left:auto;
+        margin-right: auto;
+        height: 100%;
+        width: 95%;
+      }
+      #detail_top{
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+      }
+      #detail_bottom{
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+      }
+      #follow{
+        border: 1px solid;
+        border-width: 1px;
+        margin-bottom: -10;
+      }
+    </style>
+
+</head>
+<body class="bg-secondary">
+    <nav class="d-flex justify-content-between navbar navbar-expand-lg navbar-dark bg-dark text-white", id="navbar">
+      
       <div class="d-flex">
-        {% if user.is_authenticated %}
-          <div class="collapse navbar-collapse"><a href="{% url 'accounts:profile' user.username %}" style="color: white">{{ user.username }}</a> 님 환영합니다!</div>
-        {% endif %}
+        <a class="navbar-brand text-danger " href="{% url 'movies:index' %}" id="logo">NETFLOX</a>
+        <div class="mt-2">
+          <a class="navbar-brand text-white " href="{% url 'movies:index' %}" id="home">홈</a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'movies:choice_create' %}" class="navbar-brand text-white" id="recommand-button">추천영화</a>
+          {% endif %}
+          {% if user.is_superuser %}
+          <a href="{% url 'movies:movie_create' %}" class="navbar-brand text-white" id="recommand-button">영화리스트추가</a>
+          {% endif %}
+          
+        </div>
+      </div>
+      
+      {% if user.is_superuser %}
+      <div class="mt-3" id="welcome">
+        <p class="">{{ user.username }} 관리자님 안녕하세요?</p>
+      
+      </div>
+      {% elif user.is_authenticated %}
+      <div class="mt-3" id="welcome">
+        <p class="">Welcome to NETFLOX! {{ user.username }}</p>
+      
+      </div>
+      {% endif %}
+
+      <div class="d-flex" id="login-info">
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'movies:index' %}">리뷰보기</a>
-            </li>
             {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'accounts:logout' %}">로그아웃</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'accounts:logout' %}">로그아웃</a>
+            </li>
             {% else %}
-              <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'accounts:login' %}">로그인</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'accounts:signup' %}">회원가입</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'accounts:login' %}">로그인</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'accounts:signup' %}">회원가입</a>
+            </li>
             {% endif %}
           </ul>
+        </div>
+
+        <div class="d-flex">
+          {% if user.is_authenticated %}
+          <div class="collapse navbar-collapse mr-1"><a href="{% url 'accounts:profile' user.username %}" style="color: rgb(129, 129, 129)">{{ user.username }}</a></div>
+          <a href="{% url 'accounts:profile' user.username %}"><img class="bg-warning mr-2 mt-1" src="https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg" alt="" id="profile_img"></a>
+          {% endif %}
         </div>
       </div>
       
     </nav>
-    <div class="container my-5 border border-dark bg-warning">
+    
     {% block content %}
     {% endblock %}
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 {% bootstrap_javascript jquery='full' %}
 </body>
+
+
 </html>
-
-

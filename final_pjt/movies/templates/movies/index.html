@@ -1,36 +1,48 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="d-flex " id="first">
+  <div class="iframebox col-8" allowfullscreen id="iframebox">
+    <iframe src="{{ video }}" frameborder="0" allow=autoplay id="video"></iframe>
+    <!-- <iframe src="https://www.youtube.com/watch?v=Ub9EikTkrTk" frameborder="0" allow=autoplay id="video"></iframe> -->
+  </div>
+
+  
+  <div class="col-4 p-0 ml-0 text-center text-white" style="margin-left: 10px" id="first_right">
+    
+    <div class="bg-dark ml-0" style="height: 2.5em;" id="today"><p  id="main" style="font-size: x-large; font-weight: 600;" id="today">Todays Movie<p></div>
+    <br>
+    <h3 class="" id="main">{{ top_movies.original_title }}</h4>
+    <br>
+    
+    <p class="text-left ml-10 mr-10" id="main">{{ top_movies.overview|truncatewords:16 }}</p>
+    
+    <span>장르: </span>
+    {% for genre in top_movies.genre_ids.all %}
+      <span class="" id="main">{{ genre.name }},</span>
+    {% endfor %}
+    <p id="main">개봉일: {{ top_movies.release_date }}</p>
+    <p class="text-bottom" id="main">{{ movie.like_users.all|length }} 명이 이 영화를 추천합니다!</p>
+    <span>
+      <a href=""><button>상세정보</button></a>
+      <a href=""><button>찜하기</button></a>
+    </span>
+  </div>
 
 
-<h1 style="text-align: center;">Welcome To Theater!</h1>
-<div class="d-flex justify-content-center" >
-  <a href="{% url 'movies:recommand' %}" class="btn btn-danger mx-1">영화추천</a>
-  {% if user.is_superuser %}
-  <a href="{% url 'movies:movie_create' %}" class="btn btn-primary float-right mx-1">영화목록추가</a>
-  {% endif %}
 </div>
 <br>
-
-<div class="row bg-secondary">
+<div class="row d-flex justify-content-around"id="second">
   {% for movie in page_obj %}
-  <div class="col-sm-4 col-md-4">
-    <br>
-    <div class="card mb-4 pr-1 pl-1 border border-warning" style="width: 18rem; height: 48rem;">
-      {% if movie.poster_path == null %}
-      <img style="width: 275.212px; height:416.4px;" src="https://www.seoularts.ac.kr/Web-home/func/familyCompany/images/noimg.jpg" alt="...">
+  <div class="card col-3 ml-2 mr-2 mb-4 pr-1 pl-1 " style="" id="cards">
+    <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" class=" card-img-top " id="card_img">
+
+    <div class="card-body text-center" style="height: 50%; width: 100%; font-size: large; font-weight: 600;">
+      <a href="{% url 'movies:detail' movie.pk %}" class="card-title d-flex justify-content-center text-center text-dark" style="font-size: x-large; font-weight: 700;">{{ movie.original_title }}</a>
       
-      {% else %}
-      <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" class="d-flex justify-content-center card-img-top border border-dark" alt="...">
+      <a href="{% url 'movies:detail' movie.pk %}" class="d-flex justify-content-center"><button>영화정보 더보기</button></a>
       
-      {% endif %}
-      <div class="card-body">
-        <a href="{% url 'movies:detail' movie.pk %}" class="card-title">{{ movie.title }}</a>
-        {% if movie.overview %}
-          <p class="card-text">{{ movie.overview|truncatewords:10 }}</p>  
-          <a href="{% url 'movies:detail' movie.pk %}"><button >영화정보 더보기</button></a>
-        {% endif %}
-      </div>
-      <ul class="list-group list-group-flush">
+    
+      <ul class="list-group list-group-flush" >
         <li class="list-group-item">개봉일: {{ movie.release_date }}</li>
         <li class="list-group-item">인기도: {{ movie.popularity }}</li>
         <li class="list-group-item">평점: {{ movie.vote_average }}</li>
@@ -41,26 +53,27 @@
         </li>
       </ul>
     </div>
+      
   </div>
+
   {% endfor %}
-  </div>
 </div>
 
 
-<div class="pagination">
+<div class="pagination text-white" style="font-size: x-large; font-weight: 600;">
     <span class="step-links mx-auto">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page=1" class="text-white">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="text-white">previous</a>
         {% endif %}
-        <span class="current">
+        <span class="current" class="text-white">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}" class="text-white">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="text-white">last &raquo;</a>
         {% endif %}
         <br>
         <br>

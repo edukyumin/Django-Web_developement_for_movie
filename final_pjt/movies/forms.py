@@ -1,5 +1,5 @@
 from django import forms
-from .models import Review, Comment, Movie, Genre
+from .models import Review, Comment, Movie, Genre, Recommand
 
 
 class MovieForm(forms.ModelForm):
@@ -34,3 +34,19 @@ class GenreForm(forms.ModelForm):
     class Meta:
         model = Genre
         fields = '__all__'
+
+
+class RecommandForm(forms.ModelForm):
+    genre_recommand = forms.ModelMultipleChoiceField(
+        label = '한 가지 장르를 고르는 것을 추천합니다.',
+        queryset = Genre.objects.all(),
+        widget = forms.CheckboxSelectMultiple,
+    )
+    release_date = forms.DateField(
+        widget=forms.widgets.DateInput(attrs={'type': 'date'})
+        )
+    class Meta:
+        model = Recommand
+        fields = ["genre_recommand", "popularity", "vote_average", "release_date", "adult",]
+        # fields = '__all__'
+ 

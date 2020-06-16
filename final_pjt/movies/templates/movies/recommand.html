@@ -5,6 +5,21 @@
 <br>
 <h2 class="text-info">{{ user.username }} 님을 위한 영화추천 BEST 10 !!</h2>
 
+
+{% for recommand in recommands %}
+<h1>vote_average : {{ recommand.vote_average }}</h1>
+
+<h1>release_date : {{ recommand.release_date }}</h1>
+
+<h1>popularity : {{ recommand.popularity }}</h1>
+
+<h1>adult : {{ recommand.adult }}</h1>
+{% endfor %}
+
+{% for genre in genre_recommands %}
+{{ genre.genre_recommand }}
+{% endfor %}
+
 <table class="table table-striped text-center">
   <thead>
     <tr class="">
@@ -14,13 +29,13 @@
       <th scope="col">Genre</th>
     </tr>
   </thead>
-    {% for result in results %}
+    {% for choice in choices %}
   <tbody>
     <th scope="row">{{ forloop.counter }}</th>
-    <td>{{ result.title }}</td>
-    <td><img src="https://image.tmdb.org/t/p/w780/{{ result.poster_path }}" alt="poster" style="width:auto; height: 300px;"></td>
+    <td>{{ choice.title }}</td>
+    <td><img src="https://image.tmdb.org/t/p/w780/{{ choice.poster_path }}" alt="poster" style="width:auto; height: 300px;"></td>
     <td class="genres">
-    {% for genre in result.genre_ids.all %}
+      {% for genre in choice.genre_ids.all %}
       <p class="badge badge-danger p-2">{{ genre.name }}</p><br>
       {% endfor %}
     </td>

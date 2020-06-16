@@ -15,33 +15,40 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark text-white">
-      <a class="navbar-brand text-white " href="{% url 'movies:index' %}">The Movie</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      {% if user.is_authenticated %}
-	        <div class="ml-auto"><a href="{% url 'accounts:profile' user.username %}">{{ user.username }}</a>님 환영합니다!</div>
-      {% endif %}
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'movies:index' %}">리뷰보기</a>
-          </li>
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'accounts:logout' %}">로그아웃</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'accounts:login' %}">로그인</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'accounts:signup' %}">회원가입</a>
-            </li>
-          {% endif %}
-        </ul>
+    <nav class="d-flex justify-content-between navbar navbar-expand-lg navbar-dark bg-dark text-white">
+      
+      <div>
+        <a class="navbar-brand text-danger " href="{% url 'movies:index' %}">NETFLOX</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       </div>
+
+      <div class="d-flex">
+        {% if user.is_authenticated %}
+          <div class="collapse navbar-collapse"><a href="{% url 'accounts:profile' user.username %}" style="color: white">{{ user.username }}</a> 님 환영합니다!</div>
+        {% endif %}
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'movies:index' %}">리뷰보기</a>
+            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'accounts:logout' %}">로그아웃</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'accounts:login' %}">로그인</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'accounts:signup' %}">회원가입</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      
     </nav>
     <div class="container my-5 border border-dark bg-warning">
     {% block content %}

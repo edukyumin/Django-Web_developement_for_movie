@@ -22,7 +22,8 @@
   <div class="card-body">
     <h5 class="card-title"></h5>
     <p class="card-text">
-    	<img src="https://image.tmdb.org/t/p/w780/{{ movie.backdrop_path }}" alt="poster" style="width:300px; height: 300px;">
+      <iframe width="560" height="315" src="{{ video }}" frameborder="0" >
+      </iframe>
     	</br>
     </p>
     <h6 class="text-danger">Genres :
@@ -30,6 +31,7 @@
     <span>{{ genre.name }}</span>
     {% endfor %}
     </h6>
+    <h4>{{ movie.overview }}</h4>
   </div>
 </div>
 
@@ -56,26 +58,16 @@
   </tbody>
 </table>
 
-{% if movie.user == request.user %}
+{% if request.user.is_superuser %}
 <div class="d-flex justify-content-between my-3">
-<a href="{% url 'movies:movie_update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
-<form action="{% url 'movies:movie_delete' movie.pk review.pk %}" method="POST">
+<a href="{% url 'movies:movie_update' movie.pk %}" class="btn btn-primary">수정하기</a>
+<form action="{% url 'movies:movie_delete' movie.pk %}" method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">삭제하기</button>
 </form>
 </div>
 {% endif %}
 
-
-{% if review.user == request.user %}
-<div class="d-flex justify-content-between my-3">
-<a href="{% url 'movies:update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
-<form action="{% url 'movies:delete' movie.pk review.pk %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제하기</button>
-</form>
-</div>
-{% endif %}
 
 
 

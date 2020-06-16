@@ -20,7 +20,7 @@
     <td>{{ result.title }}</td>
     <td><img src="https://image.tmdb.org/t/p/w780/{{ result.poster_path }}" alt="poster" style="width:auto; height: 300px;"></td>
     <td class="genres">
-    {% for genre in result.genres.all %}
+    {% for genre in result.genre_ids.all %}
       <p class="badge badge-danger p-2">{{ genre.name }}</p><br>
       {% endfor %}
     </td>

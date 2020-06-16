@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'movies:index' %}"><뒤로가기</a>
-<h1>Reviews Detail</h1>
-<hr>
+<a href="{% url 'movies:detail' movie.pk %}"><뒤로가기</a>
+<h1>영화 제목 : {{ movie.title }}</h1>
 
 <div class="card text-center">
-  <div class="card-header">{{ movie.title }}</div>
-  <div class="card-body">
-    <h5 class="card-title"></h5>
-    <p class="card-text">
-       <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" alt="poster" style="width:200px; height: auto;">
-       </br>
-   </p>
+  <div class="card-header text-left">
+    리뷰 제목 : {{ review.title }}<br>
+    평점 : {{ review.rank }}
+  </div>
+  <div class="card-body text-left">
+    <h5 class="card-title">리뷰 내용 : {{ review.content }}</h5>
+
   </div>
 </div>
 
@@ -41,7 +40,6 @@
 
 <h3 class="my-3">댓글목록</h3>
 
-{% for comment in comments %}
 
 <table class="table table-striped">
   <thead>
@@ -51,14 +49,14 @@
       <th scope="col">댓글 삭제</th>
     </tr>
   </thead>
+  {% for comment in comments %}
   <tbody>
-    <tr>
-       <td>{{ comment.user.username }}</td>
-       <td>{{ comment.content }}</td>
+    	<td>{{ comment.user.username }}</td>
+    	<td>{{ comment.content }}</td>
       <td>{% if comment.user == request.user %}
       <form action="{% url 'movies:comments_delete' movie.pk review.pk comment.pk %}" method="POST">
-         {% csrf_token %}
-         <button class="btn btn-secondary">댓글삭제</button>
+        {% csrf_token %}
+        <button class="btn btn-secondary">x</button>
       </form>
       {% endif %}
       </td>
@@ -70,9 +68,9 @@
 
 {% if user.is_authenticated %}
 <form action="{% url 'movies:comments_create' movie.pk review.pk %}" method="POST">
-   {% csrf_token %}
-   {{ comment_form.as_p }}
-   <button>댓글작성</button>
+	{% csrf_token %}
+	{{ comment_form.as_p }}
+	<button>댓글작성</button>
 </form>
 {% endif %}
 

@@ -6,7 +6,6 @@
 <div class="d-flex justify-content-center" >
   <a href="{% url 'movies:recommand' %}" class="btn btn-danger mx-1">영화추천</a>
   {% if user.is_superuser %}
-  <a href="{% url 'movies:genre_create' %}" class="btn btn-primary float-right mx-1">장르목록추가</a>
   <a href="{% url 'movies:movie_create' %}" class="btn btn-primary float-right mx-1">영화목록추가</a>
   {% endif %}
 </div>
@@ -16,26 +15,31 @@
   {% for movie in page_obj %}
   <div class="col-sm-4 col-md-4">
     <br>
-    <div class="card mb-4 pr-2 border border-warning" style="width: 18rem; height: 50rem;">
+    <div class="card mb-4 pr-1 pl-1 border border-warning" style="width: 18rem; height: 48rem;">
       {% if movie.poster_path == null %}
-      <img src="https://www.seoularts.ac.kr/Web-home/func/familyCompany/images/noimg.jpg" alt="...">
+      <img style="width: 275.212px; height:416.4px;" src="https://www.seoularts.ac.kr/Web-home/func/familyCompany/images/noimg.jpg" alt="...">
+      
       {% else %}
       <img src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}" class="d-flex justify-content-center card-img-top border border-dark" alt="...">
+      
       {% endif %}
       <div class="card-body">
         <a href="{% url 'movies:detail' movie.pk %}" class="card-title">{{ movie.title }}</a>
-        <p class="card-text">{{ movie.overview|truncatewords:10 }}</p>
+        {% if movie.overview %}
+          <p class="card-text">{{ movie.overview|truncatewords:10 }}</p>  
+          <a href="{% url 'movies:detail' movie.pk %}"><button >영화정보 더보기</button></a>
+        {% endif %}
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">개봉일: {{ movie.release_date }}</li>
         <li class="list-group-item">인기도: {{ movie.popularity }}</li>
         <li class="list-group-item">평점: {{ movie.vote_average }}</li>
-        <li class="list-group-item">문제의장르: {{ movie.genre_ids }}</li>
+        <li class="list-group-item">장르: 
+          {% for genre in movie.genre_ids.all %}
+          <span>{{ genre.name }}</span>
+          {% endfor %}
+        </li>
       </ul>
-      <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
-      </div>
     </div>
   </div>
   {% endfor %}

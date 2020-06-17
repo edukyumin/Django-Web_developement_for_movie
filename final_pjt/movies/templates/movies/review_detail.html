@@ -1,77 +1,89 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'movies:detail' movie.pk %}"><뒤로가기</a>
-<h1>영화 제목 : {{ movie.title }}</h1>
-
-<div class="card text-center">
-  <div class="card-header text-left">
-    리뷰 제목 : {{ review.title }}<br>
-    평점 : {{ review.rank }}
+<br>
+<div id="review_detail_box" class="text-white">
+  <h1 class="text-center text-white bg-dark"  style="font-weight: 600; border-top-left-radius: 40px; border-top-right-radius: 40px;">{{ review.user }}'s *{{ movie.original_title }}* review</h1>
+  <br>
+  <div class=" text-center">
+    <h3>{{ review.title }}</h3>
+    <h4>관람평점 : {{ review.rank }} </h4>
+    <hr>
   </div>
-  <div class="card-body text-left">
-    <h5 class="card-title">리뷰 내용 : {{ review.content }}</h5>
-
+  <div class=" text-center">
+    <h5 class="">리뷰 내용 : {{ review.content }}</h5>
   </div>
-</div>
-
-
-{% if movie.user == request.user %}
-<div class="d-flex justify-content-between my-3">
-<a href="{% url 'movies:movie_update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
-<form action="{% url 'movies:movie_delete' movie.pk review.pk %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제하기</button>
-</form>
-</div>
-{% endif %}
-
-
-{% if review.user == request.user %}
-<div class="d-flex justify-content-between my-3">
-<a href="{% url 'movies:update' movie.pk review.pk %}" class="btn btn-primary">수정하기</a>
-<form action="{% url 'movies:delete' movie.pk review.pk %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제하기</button>
-</form>
-</div>
-{% endif %}
-
-
-<h3 class="my-3">댓글목록</h3>
-
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">댓글 작성자</th>
-      <th scope="col">댓글 내용</th>
-      <th scope="col">댓글 삭제</th>
-    </tr>
-  </thead>
-  {% for comment in comments %}
-  <tbody>
-    	<td>{{ comment.user.username }}</td>
-    	<td>{{ comment.content }}</td>
-      <td>{% if comment.user == request.user %}
-      <form action="{% url 'movies:comments_delete' movie.pk review.pk comment.pk %}" method="POST">
+  
+  
+  
+  {% if movie.user == request.user %}
+  <div class="d-flex justify-content-center my-3">
+    <a href="{% url 'movies:movie_update' movie.pk review.pk %}" class="btn btn-primary">후기수정</a>
+    <form action="{% url 'movies:movie_delete' movie.pk review.pk %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-secondary">x</button>
-      </form>
-      {% endif %}
-      </td>
-    </tr>
-{% endfor %}
-  </tbody>
-</table>
-<hr>
+        <button type="submit" class="btn btn-danger">후기삭제</button>
+    </form>
+  </div>
+  {% endif %}
+  
+  
+  {% if review.user == request.user %}
+  <div class="d-flex justify-content-center my-3">
+  <a href="{% url 'movies:update' movie.pk review.pk %}" class="btn btn-primary">후기수정</a>
+  <form action="{% url 'movies:delete' movie.pk review.pk %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">후기삭제</button>
+  </form>
+  </div>
+  {% endif %}
+  
+  <br>
+  <br>
+  <div>
+    <h3 class="my-3 text-center">more reviews</h3>
+    <hr>
+    <div class="row text-center">
+      <h4  class="col-2" >작성자</h4>
+      <h4  class="col-3" >댓글 내용</h4>
+      <h4  class="col-3" >작성시간</h4>
+      <h4  class="col-3" >수정시간</h4>
+      <h4  class="col-1" >삭제</h4>
+    </div>
+    <hr style="font-weight: 800;">
+    {% for comment in comments %}
+    <div class="row text-center">
+      <h5 class="col-2">{{ comment.user.username }}</h5>
+      <h5 class="col-3">{{ comment.content }}</h5>
+      <h5 class="col-3">{{ comment.created_at }}</h5>
+      <h5 class="col-3">{{ comment.updated_at }}</h5>
+      <h5 class="col-1">
+        {% if comment.user == request.user %}
+        <form action="{% url 'movies:comments_delete' movie.pk review.pk comment.pk %}" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-danger">X</button>
+        </form>
+        {% endif %}
+      </h5>
+    </div>
+    {% endfor %}
+    <hr>
+  </div>
+    
+  {% if user.is_authenticated %}
+  <div class="d-flex text-left ml-5">
+    <form  class="d-flex" action="{% url 'movies:comments_create' movie.pk review.pk %}" method="POST" >
+      <span class="" style="">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+      </span>
+      <span>
+        <button>댓글작성</button>
+      </span>
+    </form>
+  </div>
+  {% endif %}
+    
 
-{% if user.is_authenticated %}
-<form action="{% url 'movies:comments_create' movie.pk review.pk %}" method="POST">
-	{% csrf_token %}
-	{{ comment_form.as_p }}
-	<button>댓글작성</button>
-</form>
-{% endif %}
+</div>
 
 {% endblock %}

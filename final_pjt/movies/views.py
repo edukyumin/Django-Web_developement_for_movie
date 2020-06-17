@@ -16,36 +16,34 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # 아래 수정한 것
-    YOUTUBE_API_KEY='AIzaSyD97jFX1RHbfAY-1K2cwbzOEoF0uYLlQAE'
-    # AIzaSyD_rHPaQxfjw_iRdco-hZuFSYzeTiAvMmc
-    YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search'
-    random_number = range(0, 9)
-    top_movies = movies[int(random.choice(random_number))]
     
-    params = {
-        'key': YOUTUBE_API_KEY,
-        'part': 'snippet',
-        'type': 'video',
-        'q': top_movies.title + 'trailer'
-    }
-    response = requests.get(YOUTUBE_URL, params=params).json()
-    # print(response)
-    video_id = response['items'][0]['id']['videoId']
-    # print(video_id)
-    video = f'https://www.youtube.com/embed/{video_id}?autoplay=1'
-    # print(video)
+    # YOUTUBE_API_KEY='AIzaSyDZ8volmsp-EzcqFDGcTqJ-yIslbuS6lZA'
+    # YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search'
+    # random_number = range(0, 9)
+    # top_movies = movies[int(random.choice(random_number))]
+    
+    # params = {
+    #     'key': YOUTUBE_API_KEY,
+    #     'part': 'snippet',
+    #     'type': 'video',
+    #     'q': top_movies.title + 'trailer'
+    # }
+    # response = requests.get(YOUTUBE_URL, params=params).json()
+    # video_id = response['items'][0]['id']['videoId']
+    # video = f'https://www.youtube.com/embed/{video_id}?autoplay=1'
 
     context = {
         'page_obj': page_obj,
         'movies' : movies,
         'genres' : genres,
-        'video' : video,
-        'my_movie': movies[0],
-        'top_movies' : top_movies
+        # 'video' : video,
+        # 'my_movie': movies[0],
+        # 'top_movies' : top_movies
     }
     return render(request, 'movies/index.html', context)
 
+####################################################################################
+# MOVIE #
 
 @login_required
 def movie_create(request):
@@ -56,8 +54,6 @@ def movie_create(request):
         form = MovieForm(request.POST)
         if form.is_valid():
             movie = form.save()
-            # movie.user = request.user
-            # movie.save()
             return redirect('movies:index')
     else:
         form = MovieForm()
@@ -70,18 +66,13 @@ def movie_create(request):
 @login_required
 def movie_update(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    # superuser만 movie_update할 수 있음
     if not request.user.is_superuser:
         return redirect('movies:index')
-    # if request.user == movie.user:
     if request.user.is_superuser:
         if request.method == 'POST':
             form = MovieForm(request.POST, instance=movie)
             if form.is_valid():
                 movie = form.save()
-                # movie = form.save(commit=False)
-                # movie.user = request.user
-                # movie.save()
                 return redirect('movies:index')
         else:
             form = MovieForm(instance=movie)
@@ -95,16 +86,14 @@ def movie_update(request, movie_pk):
 @require_POST
 def movie_delete(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    # superuser만 movie_delete할 수 있음
     if not request.user.is_superuser:
         return redirect('movies:index')
-    # if request.user == movie.user:
     if request.user.is_superuser:
         movie.delete()
     return redirect('movies:index')
 
-################################################
-# Review #
+##################################################################################
+# REVIEW #
 
 @login_required
 def create(request, movie_pk):
@@ -128,35 +117,25 @@ def create(request, movie_pk):
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     reviews = movie.review_set.all()
-    # genre 뽑기
     genres = movie.genre_ids.all()
     # youtube에서 트레일러 가져오기
-    # API_KEY : kyumin_api
-    
-    # const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
-    # const API_URL = 'https://www.googleapis.com/youtube/v3/search'
-    # VUE_APP_YOUTUBE_API_KEY=AIzaSyC1tQrciIigfPf2s0Acn9xsYsNgagaWT5g
 
-    YOUTUBE_API_KEY='AIzaSyD97jFX1RHbfAY-1K2cwbzOEoF0uYLlQAE'
-    # AIzaSyDU-_eW6fNS1ThG4DjvDS10G00OjsrnzgE
-    YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search'
-    params = {
-        'key': YOUTUBE_API_KEY,
-        'part': 'snippet',
-        'type': 'video',
-        'q': movie.title + 'trailer'
-    }
-    response = requests.get(YOUTUBE_URL, params=params).json()
-    # print(response)
-    video_id = response['items'][3]['id']['videoId']
-    # print(video_id)
-    video = f'https://www.youtube.com/embed/{video_id}'
-    # print(video)
+    # YOUTUBE_API_KEY='AIzaSyDZ8volmsp-EzcqFDGcTqJ-yIslbuS6lZA'
+    # YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/search'
+    # params = {
+    #     'key': YOUTUBE_API_KEY,
+    #     'part': 'snippet',
+    #     'type': 'video',
+    #     'q': movie.title + 'trailer'
+    # }
+    # response = requests.get(YOUTUBE_URL, params=params).json()
+    # video_id = response['items'][3]['id']['videoId']
+    # video = f'https://www.youtube.com/embed/{video_id}'
     context = {
         'movie': movie,
         'reviews': reviews,
         'genres': genres,
-        'video': video
+        # 'video': video
     }
     return render(request, 'movies/detail.html', context)
 
@@ -204,8 +183,8 @@ def delete(request,movie_pk, review_pk):
         review.delete()
     return redirect('movies:detail', movie_pk)
 
-#######################################################
-# comment #
+#######################################################################################
+# COMMENT #
 
 @login_required
 def comments_create(request, movie_pk, review_pk):
@@ -252,8 +231,8 @@ def like(request, movie_pk):
     return JsonResponse(context)
 
 
-##############################################################################################
-# Genre 생성, 수정, 삭제
+#################################################################################
+# Genre #
 
 # @login_required
 # def genre_create(request):
@@ -300,8 +279,8 @@ def like(request, movie_pk):
 #         genre.delete()
 #     return redirect('movies:index')
 
-#######################################################################
-# 영화추천
+###########################################################################################
+# RECOMMEND #
 
 @login_required
 def choice_create(request):
@@ -318,22 +297,6 @@ def choice_create(request):
     }
     return render(request, 'movies/recommand_form.html', context)
 
-# @login_required
-# def choice_update(request, recommand_pk):
-#     recommand = get_object_or_404(Recommand, pk=recommand_pk)
-#     if request.method == 'POST':
-#         form = RecommandForm(request.POST, instance=recommand)
-#         if form.is_valid():
-#             recommand = form.save()
-#             return redirect('mocies:recommand')
-#     else:
-#         form = RecommandForm(instance=recommand)
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'movies/recommand_form.html', context)
-
-
 
 @login_required
 def recommend(request):
@@ -343,21 +306,16 @@ def recommend(request):
     recommands = Recommand.objects.all()
     # 추천요청 중 장르만 뽑은 것
     genre_recommands = Recommand.objects.values('genre_recommand')
-    
-
-    choice = []
- 
+    choices = []
     if request.user.id != None: # 로그인한 유저라면
         # 이하는 추천 알고리즘
         # form에 들어간 genre 에 따라
         choice_genres = []
         check = 1
         for favorite_genre in genre_recommands:
-
             choice_genres.append(favorite_genre['genre_recommand'])
             check = check * favorite_genre['genre_recommand']
 ##########################################################################################
-
         for movie in movies:
             compare = 1
             compare2 = []
@@ -372,18 +330,17 @@ def recommend(request):
                         flag = False
                 if flag == True:
                     if Recommand.objects.values('adult').get()['adult'] == movie.adult:
-        # form에 들어간 popularity 에 따라
+                        # form에 들어간 popularity 에 따라
                         if Recommand.objects.values('popularity').get()['popularity'] <= movie.popularity:
-        # form에 들어간 vote_average 에 따라
+                             # form에 들어간 vote_average 에 따라
                             if Recommand.objects.values('vote_average').get()['vote_average'] <= movie.vote_average:
-        # form에 입력한 release_date에 따라
+                                # form에 입력한 release_date에 따라
                                 # 값이 작을수록 최신에 개봉한 영화입니다.
                                 if datetime.datetime.strptime(str(Recommand.objects.values('release_date').get()['release_date']), "%Y-%m-%d") <= datetime.datetime.strptime(str(movie.release_date), "%Y-%m-%d"):
-                                    choice.append(movie)
+                                    choices.append(movie)
  
-    choices = choice
-
     context = {
+        'movies' : movies,
         'choices' : choices,
         'genres': genres,
         'recommands' : recommands,

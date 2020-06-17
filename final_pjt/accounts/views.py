@@ -46,7 +46,7 @@ def logout(request):
 @login_required
 def profile(request, username):
     person = get_object_or_404(User, username=username)
-    like_movies = request.user.like_users
+    like_movies = person.like_users
     movies = like_movies.all()
     context = {
         'person': person,

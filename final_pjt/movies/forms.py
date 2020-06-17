@@ -9,14 +9,13 @@ class MovieForm(forms.ModelForm):
         queryset = Genre.objects.all(),
         widget = forms.CheckboxSelectMultiple,
     )
-    # release_date 를 달력에서 찾아서 하는거
+    # release_date 를 달력으로 고르기
     release_date = forms.DateField(
         widget=forms.widgets.DateInput(attrs={'type': 'date'})
     )
     class Meta:
         model = Movie
         fields = ["title", "original_title", "release_date", "popularity", "vote_count", "vote_average", "adult", "video", "overview", "original_language", "poster_path", "backdrop_path", "genre_ids",]
-        # fields = '__all__'
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -25,6 +24,9 @@ class ReviewForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label = '댓글달기'
+    )
     class Meta:
         model = Comment
         fields = ["content",]
@@ -38,7 +40,7 @@ class GenreForm(forms.ModelForm):
 
 class RecommandForm(forms.ModelForm):
     genre_recommand = forms.ModelMultipleChoiceField(
-        label = '한 가지 장르를 고르는 것을 추천합니다.',
+        label = '원하시는 장르를 고르시오.',
         queryset = Genre.objects.all(),
         widget = forms.CheckboxSelectMultiple,
     )
@@ -47,6 +49,4 @@ class RecommandForm(forms.ModelForm):
         )
     class Meta:
         model = Recommand
-        fields = ["genre_recommand", "popularity", "vote_average", "release_date", "adult",]
-        # fields = '__all__'
- 
+        fields = ["genre_recommand", "popularity", "vote_average", "release_date", "adult",] 

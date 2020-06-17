@@ -4,7 +4,7 @@ from django.conf import settings
 
 class Genre(models.Model):
     name = models.CharField(max_length=100)
-    # genre가 숫자로 들어 가있는 것을 글자로 보여주기 위해서~
+    # genre가 숫자로 들어 가있는 것을 글자로 보여줌
     def __str__(self):
         return self.name
 
@@ -21,7 +21,6 @@ class Movie(models.Model):
     original_language = models.CharField(max_length=30)
     poster_path = models.CharField(max_length=255, null=True)
     backdrop_path = models.CharField(max_length=255, null=True)
-    # 원래 genres
     genre_ids = models.ManyToManyField(Genre, related_name='genre_ids')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='like_users')
 
@@ -46,7 +45,7 @@ class Comment(models.Model):
 
 
 class Recommand(models.Model):
-    genre_recommand = models.ManyToManyField(Genre, null=True,  related_name='genre_recommand')
+    genre_recommand = models.ManyToManyField(Genre, related_name='genre_recommand')
     adult = models.BooleanField(null=True)
     popularity = models.FloatField(null=True)
     vote_average = models.FloatField(null=True)

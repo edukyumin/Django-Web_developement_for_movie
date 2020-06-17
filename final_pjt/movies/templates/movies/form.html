@@ -3,28 +3,22 @@
 
 {% block content %}
 {% if request.resolver_match.url_name == 'create' %}
-<h1>리뷰작성</h1>
+<h1 class="text-center">리뷰작성</h1>
 {% else %}
-<h1>수정하기</h1>
+<h1 class="text-center">수정하기</h1>
 {% endif %}
 
-{% if request.resolver_match.url_name == 'create' %}
-<a href="{% url 'movies:index' %}"><뒤로가기</a>
-{% else %}
-<a href="{% url 'movies:detail' review.pk %}"><뒤로가기</a>
-{% endif %}
-
-<form action="" method="POST">
+<form style="width: 720px;" class="mx-auto" action="" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% if request.resolver_match.url_name == 'create' %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">작성하기</button>
-        {% endbuttons %}
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">확인</button>
+    </div>  
     {% else %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">수정하기</button>
-        {% endbuttons %}
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">수정하기</button>
+    </div>
     {% endif %}
 
 </form>

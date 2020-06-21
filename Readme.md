@@ -52,6 +52,8 @@
 
 - Home (index)
 
+  ![index](https://user-images.githubusercontent.com/60081254/85224319-6d02f280-b404-11ea-974e-a1a92796943e.png)
+
   ![index](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\index.png)
 
 - Movie_detail

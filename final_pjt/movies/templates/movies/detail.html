@@ -67,9 +67,9 @@
       <tbody>
           {% for review in reviews %}
           <tr>
-            <th scope="row" style="">{{ forloop.counter }}</th>
-            <td><a href="{% url 'movies:review_detail' movie.pk review.pk %}" class="text-dark">{{ review.title }}</a></td>
-            <td>{{ review.content }}</td>
+            <th class="text-white" scope="row" style="">{{ forloop.counter }}</th>
+            <td><a href="{% url 'movies:review_detail' movie.pk review.pk %}" class="text-white">{{ review.title }}</a></td>
+            <td class="text-white">{{ review.content }}</td>
             <td><a href="{% url 'accounts:profile' review.user.username %}" class="text-white">{{ review.user.username }} 님의 프로필 방문하기</a></td>
           </tr>
           {% endfor %}

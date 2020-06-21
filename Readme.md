@@ -52,23 +52,23 @@
 
 - Home (index)
 
-  ![index](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\readme.assets\index.png)
+  ![index](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\index.png)
 
 - Movie_detail
 
-  ![detail](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\readme.assets\detail.png)
+  ![detail](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\detail.png)
 
 - Profile
 
-  ![profile](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\readme.assets\profile.png)
+  ![profile](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\profile-1592740208212.png)
 
 - Movie_recommend
 
-  ![recommend](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\readme.assets\recommend.png)
+  ![recommend](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\recommend.png)
 
 - Review
 
-  ![review](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\readme.assets\review.png)
+  ![review](C:\Users\82102\Desktop\SSAFY온라인\projects\Final_pjt_Github용\Readme.assets\review.png)
 
 
 
